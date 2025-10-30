@@ -12,7 +12,7 @@ type Search = { [key: string]: string | string[] | undefined };
 
 export default function BlogPage({ searchParams }: { searchParams?: Search }) {
   const posts = getAllPosts();
-  const featured = getFeaturedPosts(5);
+  const featured = getFeaturedPosts(10);
 
   // category filter from ?category=Leadership
   const category = (searchParams?.category as string) || "All";
