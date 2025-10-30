@@ -25,7 +25,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
   if (!post) return notFound();
 
   const { prev, next } = getAdjacent(params.slug);
-  const featured = getFeaturedPosts(3);
+  const featured = getFeaturedPosts(10);
 
   return (
     <div className="container grid lg:grid-cols-4 gap-10 pt-6">
