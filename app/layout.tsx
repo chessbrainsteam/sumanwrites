@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://sumanwrites.com",
   },
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.png" }],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
