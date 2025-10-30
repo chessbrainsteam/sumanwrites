@@ -3,6 +3,16 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { serialize } from "next-mdx-remote/serialize";
+import remarkGfm from "remark-gfm";
+
+export async function mdxToHtml(source: string) {
+  return await serialize(source, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+    },
+  });
+}
 
 export type PostFrontmatter = {
   title: string;

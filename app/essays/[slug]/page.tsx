@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getAllSlugs, getPostBySlug, getAdjacent, getFeaturedPosts } from "@/lib/mdx";
 import ArticleActions from "@/components/ArticleActions";
+import remarkGfm from "remark-gfm";
+
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -51,7 +53,14 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
 
         {/* MDX Content */}
         <div className="prose prose-lg prose-headings:font-semibold prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
-          <MDXRemote source={post.content} />
+          <MDXRemote
+  source={post.content}
+  options={{
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+    },
+  }}
+/>
         </div>
 
         {/* Bottom navigation */}
