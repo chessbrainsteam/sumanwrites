@@ -1,5 +1,5 @@
 
-# sumanwrites — About + Essays (Next.js + Tailwind + MDX)
+# sumanwrites — About + Articles (Next.js + Tailwind + MDX)
 
 A minimalist, Substack-like site focused on your writing voice.
 
@@ -11,7 +11,7 @@ npm run dev
 ```
 
 ## Add a new essay
-- Drop a `.mdx` file into `content/essays/` with frontmatter:
+- Drop a `.mdx` file into `content/articles/` with frontmatter:
 ```md
 ---
 title: "My Title"
@@ -22,7 +22,7 @@ tags: ["leadership"]
 
 Your MDX content here.
 ```
-- The post is auto-listed on `/essays` and available at `/essays/my-title` (filename = slug).
+- The post is auto-listed on `/articles` and available at `/articles/my-title` (filename = slug).
 
 ## Customize
 - Edit `app/page.tsx` intro paragraph.

@@ -27,7 +27,7 @@ export default function PostCard({
     >
       {/* ---- Image ---- */}
       {cover && (
-        <Link href={`/essays/${slug}`} className="block overflow-hidden rounded-xl">
+        <Link href={`/articles/${slug}`} className="block overflow-hidden rounded-xl">
           <div className="relative w-full h-40">
             <Image
               src={cover}
@@ -49,7 +49,7 @@ export default function PostCard({
                        line-clamp-2 min-h-[3.2rem]"
             style={{ wordBreak: "break-word" }}
           >
-            <Link href={`/essays/${slug}`}>{title}</Link>
+            <Link href={`/articles/${slug}`}>{title}</Link>
           </h3>
 
           <p className="text-xs text-gray-500 mt-1">
@@ -73,7 +73,7 @@ export default function PostCard({
         {/* ---- Read more ---- */}
         <div className="pt-3 mt-auto">
           <Link
-            href={`/essays/${slug}`}
+            href={`/articles/${slug}`}
             className="inline-block text-sm font-medium text-indigo-600 hover:text-indigo-700 transition"
           >
             Read →

@@ -30,7 +30,7 @@ export type Post = PostFrontmatter & {
   content: string;
 };
 
-const CONTENT_DIR = path.join(process.cwd(), "content", "essays");
+const CONTENT_DIR = path.join(process.cwd(), "content", "articles");
 
 function safeList(): string[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];

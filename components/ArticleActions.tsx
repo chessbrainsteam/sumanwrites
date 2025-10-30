@@ -4,7 +4,7 @@ import { ShareIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default function ArticleActions({ slug }: { slug: string }) {
-  const shareUrl = encodeURIComponent(`https://www.sumanwrites.com/essays/${slug}`);
+  const shareUrl = encodeURIComponent(`https://www.sumanwrites.com/articles/${slug}`);
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
 
   return (

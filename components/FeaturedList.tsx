@@ -14,7 +14,7 @@ export default function FeaturedList({
       <ul className="space-y-4">
         {items.map((p) => (
           <li key={p.slug} className="flex gap-3">
-            <Link href={`/essays/${p.slug}`} className="block h-14 w-20 shrink-0 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+            <Link href={`/articles/${p.slug}`} className="block h-14 w-20 shrink-0 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
               {p.cover ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={p.cover} alt={p.coverAlt || p.title} className="h-full w-full object-cover" />
@@ -23,7 +23,7 @@ export default function FeaturedList({
               )}
             </Link>
             <div className="min-w-0">
-              <Link href={`/essays/${p.slug}`} className="font-medium hover:underline line-clamp-2">
+              <Link href={`/articles/${p.slug}`} className="font-medium hover:underline line-clamp-2">
                 {p.title}
               </Link>
               <p className="text-[11px] text-gray-500">{new Date(p.date).toLocaleDateString()}</p>

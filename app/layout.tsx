@@ -4,11 +4,11 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "sumanwrites — essays by Suman Kalavagunta",
-  description: "Essays on leadership, engineering, and human systems.",
+  title: "sumanwrites — Articles by Suman Kalavagunta",
+  description: "Articles on leadership, engineering, and human systems.",
   openGraph: {
     title: "sumanwrites",
-    description: "Essays on leadership, engineering, and human systems.",
+    description: "Articles on leadership, engineering, and human systems.",
     type: "website",
     url: "https://sumanwrites.com",
   },

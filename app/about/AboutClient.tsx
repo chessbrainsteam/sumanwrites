@@ -134,7 +134,7 @@ export default function AboutClient() {
           </p>
           <p>
             If you’re a <strong>tech leader, engineer, or curious learner</strong>, 
-            I hope these essays help you see that leadership and technology 
+            I hope these articles help you see that leadership and technology 
             are not separate — they amplify each other.
           </p>
           <p className="text-indigo-700 font-medium">
@@ -153,7 +153,7 @@ export default function AboutClient() {
     Ready to explore the ideas?
   </h2>
   <p className="text-gray-600 mt-2">
-    Browse essays on leadership, engineering, and growth.
+    Browse articles on leadership, engineering, and growth.
   </p>
   <Link
     href="/blog"

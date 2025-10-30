@@ -71,7 +71,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
           <div className="flex items-center gap-4">
             {prev && (
               <Link
-                href={`/essays/${prev.slug}`}
+                href={`/articles/${prev.slug}`}
                 className="text-gray-700 hover:text-black truncate max-w-[40ch]"
               >
                 ← {prev.title}
@@ -79,7 +79,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
             )}
             {next && (
               <Link
-                href={`/essays/${next.slug}`}
+                href={`/articles/${next.slug}`}
                 className="text-gray-700 hover:text-black truncate max-w-[40ch]"
               >
                 {next.title} →
@@ -98,7 +98,7 @@ export default function EssayPage({ params }: { params: { slug: string } }) {
         {featured.map((item) => (
           <Link
             key={item.slug}
-            href={`/essays/${item.slug}`}
+            href={`/articles/${item.slug}`}
             className="group block border rounded-lg p-3 hover:shadow-sm transition"
           >
             {item.cover && (
