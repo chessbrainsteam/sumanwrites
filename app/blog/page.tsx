@@ -24,9 +24,9 @@ export default function BlogPage({ searchParams }: { searchParams?: Search }) {
 
   // pagination logic
   const rawPage = Number((searchParams?.page as string) ?? 1);
-  const rawPageSize = Number((searchParams?.pageSize as string) ?? 24);
+  const rawPageSize = Number((searchParams?.pageSize as string) ?? 12);
 
-  const pageSize = Math.min(48, Math.max(6, isFinite(rawPageSize) ? rawPageSize : 24));
+  const pageSize = Math.min(48, Math.max(6, isFinite(rawPageSize) ? rawPageSize : 12));
   const total = filteredPosts.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const page = Math.min(Math.max(1, isFinite(rawPage) ? rawPage : 1), totalPages);
