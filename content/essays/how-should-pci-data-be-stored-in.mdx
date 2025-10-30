@@ -1,0 +1,96 @@
+---
+title: "How Should PCI Data Be Stored In"
+summary: "If you're handling credit card data, you're sitting on a vault of highly sensitive information. That means you’re also on the hook for protecting it — not just from attackers, but from sloppy internal practices...."
+date: "2025-10-29"
+featured: false
+tags: []
+category: "Engineering"
+cover: "/images/pci.png"
+---
+If you're handling credit card data, you're sitting on a vault of highly sensitive information. That means you’re also on the hook for protecting it — not just from attackers, but from sloppy internal practices. Welcome to the world of **PCI DSS** (Payment Card Industry Data Security Standard), the global rulebook for keeping cardholder data safe.
+
+One of the most common questions I hear from engineers and tech leads is:
+
+> **How should PCI data be stored in a database, and what are the best practices for transit and encryption?**
+
+Let’s break it down — simply, practically, and without buzzwords.
+
+### 🚫 First Rule: Don’t Store PCI Data Unless You Absolutely Have To
+
+Seriously. If you can get away without storing cardholder data (especially full PANs — Primary Account Numbers), that’s your best option. Use tokenization, third-party vaults, or payment gateways that keep you out of PCI scope.
+
+But if you **must** store it, here’s how to do it right.
+
+### 1. 🔄 Encrypt Data in Transit
+
+Any time cardholder data is moving — from a browser to your backend, or between internal services — it needs to be encrypted using **strong transport encryption** like:
+
+- **TLS 1.2 or above**
+- **Mutual TLS (mTLS)** for internal service-to-service calls
+
+✅ **Avoid** outdated protocols like SSL, TLS 1.0, or 1.1.
+
+**Example:**
+A user submits their card on your checkout form. That request must be protected using HTTPS (TLS 1.2+). If you’re passing it to a payment processor or another service, that connection needs encryption too.
+
+### 2. 💾 Encrypt Data at Rest (Strongly)
+
+If you’re storing cardholder data:
+
+- Use **AES-256** or **AES-128-GCM**
+- Store encryption keys separately, with hardened access policies
+- Never store **CVV/CVC** after authorization (PCI considers this a violation)
+
+PCI DSS also expects:
+
+- Proper key rotation procedures
+- Access logs and audit trails
+- Fine-grained access control (least privilege)
+
+### 3. ⏱️ Decrypt Only When Needed — and Only in Memory
+
+You might need to decrypt a PAN to send it to a processor or run a fraud check — and that’s fine. But:
+
+- Decryption should only happen **in-memory**
+- Never write decrypted data to disk or logs
+- Keep the decrypted data’s lifetime as short as possible
+
+Treat decryption like a scalpel, not a hammer.
+
+### 4. 👀 Mask When Displaying
+
+If cardholder data needs to be shown — say, to a support agent or the user — **only display the last 4 digits**. Never show the full PAN, CVV, or expiration date together.
+
+> Example: **** **** **** 1234
+
+This helps avoid accidental exposure while still providing recognizable info to the user.
+
+### 5. ❌ Don’t DIY Crypto
+
+Rolling your own encryption is like writing your own seatbelt. It might seem secure until you crash.
+
+Instead, use:
+
+- **AWS KMS**, **Azure Key Vault**, or a dedicated HSM
+- Well-tested crypto libraries like OpenSSL, Bouncy Castle, or libsodium
+
+### 🤔 Wait, What About Hashing?
+
+Good question — but **hashing is not appropriate for storing PANs.** Hashing is one-way, meaning you can’t recover the original card number. PCI requires that PANs be encrypted (i.e., reversible, with controlled access) — not hashed.
+
+That said, **hashing can be used** for:
+
+- Internal indexing or deduplication
+- Anonymized analytics or fraud detection
+
+But for secure storage? **Encryption is the only acceptable option.**
+
+### 🧠 Final Thoughts
+
+PCI compliance isn’t a checklist. It’s a security posture. If you're encrypting in transit, encrypting at rest, avoiding unnecessary storage, and applying access control with discipline — you're on the right path.
+
+But here’s the truth nobody likes to say out loud:
+
+> **The safest PCI data is the one you never store.**
+
+

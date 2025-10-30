@@ -1,0 +1,114 @@
+---
+title: "TLS, OAuth, and Trust: How Enterprises Exchange Certificates and Keys"
+summary: "When we think of securing APIs, we often hear buzzwords like OAuth2 , mTLS , or TLS encryption . But what’s rarely talked about is what happens behind the scenes — how enterprises actually exchange certificates and ke..."
+date: "2025-10-29"
+featured: false
+tags: []
+category: "Engineering"
+cover: "/images/tls.png"
+---
+When we think of securing APIs, we often hear buzzwords like **OAuth2**, **mTLS**, or **TLS encryption**. But what’s rarely talked about is what happens *behind the scenes* — how enterprises actually exchange certificates and keys, how trust is established between systems, and how real-world flows differ between **OAuth1** and **OAuth2**.
+
+In this post, I’ll walk through how large organizations — especially in fintech and payments — manage **certificate-based security** during onboarding. We’ll cover how **TLS**, **mutual TLS (mTLS)**, and **OAuth** come together to enable secure communication between enterprise systems.
+
+# First Comes Trust: TLS and mTLS Setup
+
+In any secure API communication, the **TLS handshake** is the starting point.
+
+- The **server** shares its **public certificate** — this allows the client to verify it’s connecting to the right host.
+- The **client** stores this cert in its **trust store** (Java keystore, JKS, PEM file, etc.).
+- With **mutual TLS (mTLS)**, the client also presents its **own certificate** during the handshake.
+- The **server must trust the client cert**, either by trusting the CA that issued it or by explicitly storing it.
+
+# How certificates are exchanged:
+
+In most enterprise onboarding flows:
+
+- A secure **partner portal** is used to download server and client certs.
+- The client might be asked to upload their public cert ahead of time.
+- Certificates are manually added to **trust stores** or **API Gateway configurations**.
+
+> *⚠️ Tip: Missing intermediate certs or wrong formats (*PEM* vs. *DER*) are common onboarding issues.*
+
+# OAuth1 Signing: Where Keys Come In
+
+OAuth1 is still alive in many banking, government, and legacy systems. It’s different from OAuth2 because it uses **cryptographic request signing** rather than access tokens.
+
+# How OAuth1 works in practice:
+
+- The client downloads a .p12** file**, which contains:
+- A **private key** used to **sign each request** (using RSA-SHA1)
+- A **client certificate** (optional, for mTLS)
+- The server stores the **client’s public key** in a secure key registry or config.
+- When the client sends an API request:
+- It signs the request using OAuth1 parameters:
+
+```
+oauth_consumer_key, oauth_nonce, oauth_signature_method, oauth_timestamp, oauth_version, oauth_signature
+```
+
+- The server verifies the signature using the stored public key.
+- This signature ensures **non-repudiation** — the client cannot deny having sent the request.
+
+# Example: A Real-World Enterprise Setup
+
+Let’s walk through what a real onboarding flow might look like:
+
+1. Client logs into the onboarding portal.
+2. Downloads:
+
+- .p12 file containing their **private signing key** and **client certificate**
+- .pem file containing the **server’s TLS certificate**
+
+3. Client:
+
+- Uses server’s .pem to validate the HTTPS connection (TLS)
+- Uses .p12 to:
+- Authenticate via mTLS
+- Sign API requests using OAuth1
+
+4. Server:
+
+- Verifies mTLS using the client cert
+- Verifies the OAuth1 signature using the registered client public key
+
+# OAuth2: Simpler, But With Its Own Rules
+
+OAuth2 replaced OAuth1 in many systems by introducing **access tokens**. Instead of signing each request, the client retrieves a token from an **Authorization Server** and presents it like a digital pass.
+
+# Standard OAuth2 Flow:
+
+1. Client authenticates with client_id and client_secret, or via mTLS.
+2. Gets an access_token from the Auth Server.
+3. Sends the token with each request:
+
+```
+Authorization: Bearer 
+```
+
+4. API Gateway or backend validates the token:
+
+- Either by introspection (/token/introspect)
+- Or by validating the JWT signature
+
+# Certificates and OAuth2?
+
+- TLS is mandatory to protect tokens in transit.
+- mTLS may be used to authenticate the client during the token request (especially in FAPI-compliant environments).
+- No request signing is needed like in OAuth1 — **bearer tokens are simpler** but also **easier to misuse if leaked**.
+
+# Best Practices From the Field
+
+Here are a few hard-earned lessons:
+
+- **Separate key material for TLS and OAuth1**Don’t reuse the same .p12 or private key for both purposes. Use **independent certs/keys** to isolate rotation and minimize security risk.
+- **Track cert expiration dates proactively**Downtime due to expired certs happens more often than we’d like to admit.
+- **Use a key vault**Don’t store private keys in code or flat config files. Use a centralized solution like **AWS Secrets Manager**, **Azure Key Vault**, or **HashiCorp Vault**.
+- **Automate rotation and onboarding**Manual cert exchange and key registration leads to inconsistency and human error. Where possible, automate onboarding via API.
+- **Test negative scenarios**Always test how your system behaves with expired certs, invalid signatures, and revoked tokens.
+
+# Final Thoughts
+
+Whether you’re implementing **OAuth1 with request signatures** or **OAuth2 with tokens**, it all begins with trust — and that trust is built on **certificates**, **keys**, and **secure exchange practices**.
+
+In fintech and other security-sensitive domains, taking the time to understand these flows can make the difference between a **robust integration** and a **nightmare in production**.

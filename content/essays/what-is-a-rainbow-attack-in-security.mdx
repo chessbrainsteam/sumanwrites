@@ -1,0 +1,62 @@
+---
+title: "🌈 What Is a Rainbow Attack in Security?"
+summary: "Let’s say you forget your email password. You type in “reset,” and the system sends you a link—not your actual password—because your password is stored as a hash , not in plain text. That’s good security."
+date: "2025-10-29"
+featured: false
+tags: []
+category: "Engineering"
+cover:"/images/rainbow.png"
+---
+Let’s say you forget your email password. You type in “reset,” and the system sends you a link—not your actual password—because **your password is stored as a hash**, not in plain text. That’s good security.
+
+But what if a hacker steals the **hashed passwords** from a database?
+They can’t *see* your password directly, but with a technique called a **rainbow attack**, they might still figure it out.
+
+## 🔐 Hashing: The One-Way Lock
+
+A **hash function** takes your password (like `sunshine123`) and turns it into a fixed string of characters like:
+
+```
+sunshine123 → 5d41402abc4b2a76b9719d911017c592
+```
+
+The key thing?
+You can go from password → hash,
+but **not** from hash → password (at least, not easily).
+
+## 🌈 Enter: The Rainbow Table
+
+Now imagine a hacker pre-computes the hashes of **millions of common passwords** and stores them in a huge lookup table:
+
+123456 →  e10adc3949ba59abbe56e057f20f883e
+
+password  →  5f4dcc3b5aa765d61d8327deb882cf99
+
+sunshine123 →  5d41402abc4b2a76b9719d911017c592
+
+If the hacker sees a hash in your system that matches one in their rainbow table, they instantly know the password.
+
+That’s a **rainbow attack**—fast, clever, and deadly if you don’t defend properly.
+
+## 🧂 The Hero: Salt
+
+A **salt** is a random string added to your password *before hashing*.
+So `sunshine123` + `Xyz1@` → a completely different hash.
+
+Even if two people have the same password, the hash will look different due to the unique salt.
+
+### Without salt:
+
+- User A & User B use 123456 → same hash
+
+### With salt:
+
+- User A: 123456 + x1 → hashA
+- User B: 123456 + y7 → hashB
+- ✅ No rainbow table can predict that
+
+## 🧠 In Summary
+
+- 🔒 Passwords are stored as hashes so they’re not readable.
+- 🌈 Rainbow attacks use massive tables of precomputed hashes to reverse-guess passwords.
+- 🧂 Salting passwords makes rainbow tables **useless** by making each hash unique.

@@ -1,0 +1,84 @@
+---
+title: "What Hashing Is (and Isn’t) — And Why It’s Misused in Most Systems"
+summary: "Let’s talk about hashing — one of the most misunderstood tools in a developer’s security toolbox."
+date: "2025-10-29"
+featured: false
+tags: []
+category: "Engineering"
+cover: "/images/hashing.png"
+---
+Let’s talk about hashing — one of the most misunderstood tools in a developer’s security toolbox.
+
+Too often, I see teams reach for a hash function when what they *really* need is encryption. Or worse — they treat hashing like a silver bullet that magically “secures” data. Spoiler: it doesn’t work that way.
+
+So here’s a plain-English breakdown of what hashing actually does, when to use it, and how to avoid the common pitfalls.
+
+### 🔍 What Is Hashing?
+
+**Hashing is a one-way function** that takes some input (like a password or email address) and produces a fixed-length output called a hash. The same input will always produce the same output — but it’s designed to be *impossible* to reverse.
+
+Think of it like a digital fingerprint:
+
+- It’s unique to the input
+- You can compare fingerprints to see if two inputs match
+- But you can’t recreate the original from the fingerprint
+
+### ⚠️ Hashing Is Not Encryption
+
+This is the mistake most teams make:
+
+> They treat hashing like encryption — but it’s not reversible.
+
+If you hash a credit card number, you’ll never get the original back. That’s great for verifying passwords, but terrible if you need to recover or re-use the data — like sending it to a payment processor.
+
+### ✅ When You Should Use Hashing
+
+Hashing shines in situations where you only care about **matching** values — not retrieving them.
+
+#### Good use cases:
+
+- **Password storage** (with a salt and a slow hash function like bcrypt or Argon2)
+- **Deduplicating emails or PANs** in logs without storing the raw values
+- **Anonymized analytics** or fraud detection
+
+In all of these, you don’t care about getting the original data back — just whether the same input has appeared before.
+
+### ❌ When You Shouldn’t Use Hashing
+
+If you need to retrieve or transmit the original data, **hashing is the wrong tool.** That includes:
+
+- Storing credit card numbers (PANs)
+- Saving Social Security Numbers or national IDs
+- Encrypting sensitive profile data (names, addresses, etc.)
+- Anything you plan to decrypt or view again
+
+For those, use **encryption** — ideally with AES-256 and proper key management.
+
+### 🔐 Hashing + Salting = Good Practice
+
+When storing passwords:
+
+- Always use a **salt** (a unique, random string) for each user
+- Use a **slow hashing function** (bcrypt, scrypt, Argon2)
+
+Don’t use:
+
+- MD5 (broken)
+- SHA-1 (broken)
+- Fast hash functions like SHA-256 for passwords (too fast = easier to brute force)
+
+### Real Talk
+
+Hashing isn’t a magic shield. It won’t make sensitive data safe if you're using it in the wrong place.
+
+If you're storing anything sensitive and think "I'll just hash it," ask yourself:
+
+> **Do I need to get this data back later?**If the answer is yes — **use encryption instead.**
+
+Hashing is amazing when used correctly — but when misused, it creates a false sense of security. That’s worse than having no security at all.
+
+### Closing Thought
+
+Hashing isn’t broken — misuse is.
+
+Understand the tool, apply it with purpose, and you’ll not only build more secure systems — you'll avoid cleaning up messes no one else wants to touch.

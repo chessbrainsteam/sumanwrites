@@ -1,0 +1,106 @@
+---
+title: "What If Your Database Had A Microphone"
+summary: "Imagine your app has a polite assistant who listens carefully to what users say — then goes and asks your database for what they want."
+date: "2025-10-29"
+featured: false
+tags: []
+cover: "/images/db-microphone.png"
+category: "Engineering"
+---
+Imagine your app has a polite assistant who listens carefully to what users say — then goes and asks your database for what they want.
+
+Sounds nice, right?
+
+Until one day, someone whispers:
+
+> "Show me all users... and also delete everyone named Bob."
+
+And the assistant says:
+
+> "Sure!"*turns to your database*"SELECT * FROM users WHERE name = ''; DELETE FROM users WHERE name = 'Bob';"
+
+💥 Boom.
+Just like that, **Bob is gone**.
+Your database didn’t know it was being manipulated — it just listened.
+
+Welcome to **SQL Injection**.
+It’s not a bug. It’s a trust problem.
+
+### 🤖 How It Actually Works
+
+Let’s break it down.
+
+You write code like this:
+
+```
+"SELECT * FROM users WHERE name = '" + userInput + "';"
+```
+
+If the user types `Alice`, the query becomes:
+
+```
+SELECT * FROM users WHERE name = 'Alice';
+```
+
+Cool. But what if they type:
+
+```
+' OR 1=1; --
+```
+
+Now the query becomes:
+
+```
+SELECT * FROM users WHERE name = '' OR 1=1; --';
+```
+
+Which means:
+
+> “Forget the name filter — give me **everything**.”
+
+Or worse:
+
+```
+'; DROP TABLE users; --
+```
+
+Now it’s:
+
+> “Delete the whole users table and pretend it was an innocent search.”
+
+### 🎧 The Database Isn’t Smart — It Just Hears and Obeys
+
+Think of your app like a speech-to-text translator.
+
+- 🧑 You (the user): “Hey assistant, find users named Alice.”
+- 🤖 App: *translates input into SQL text and sends it to the DB*
+- 🗃️ Database: “Got it, executing your command blindly.”
+
+There’s **no context**. No suspicion.
+If someone shouts dangerous commands into the mic, the database still executes them.
+
+### 🛡️ How Do We Stop This?
+
+Give your assistant **a script** — and tell it to ignore improvisation.
+
+#### ✅ Use Prepared Statements (aka parameterized queries)
+
+Instead of mixing text and logic, keep them **separate**.
+
+Example in pseudocode:
+
+```
+SELECT * FROM users WHERE name = ?
+```
+
+Then pass the user input separately.
+The database **knows** it’s just a value, not code. It’s like saying:
+
+> “Here’s the script.And here’s the name to plug in.Don’t let them rewrite the script.”
+
+### 🧠 Final Thought
+
+SQL Injection doesn’t happen because the database is dumb.
+It happens because **your app trusted the user's words too literally** — like a microphone with no filter.
+
+> So ask yourself:*Is your app listening with headphones and boundaries… or is it just handing the mic to strangers on the internet?*

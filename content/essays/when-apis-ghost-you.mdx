@@ -1,0 +1,145 @@
+---
+title: "👻 When APIs Ghost You"
+summary: "We’ve all had that one friend. You text them: > “Hey, wanna grab lunch?” And… nothing. No reply. No read receipt. Just the digital void."
+date: "2025-10-29"
+featured: true
+tags: []
+cover: "/images/api-timeout.png"
+category: "Engineering"
+
+---
+
+We’ve all had that one friend.
+
+You text them:
+
+> “Hey, wanna grab lunch?”
+
+And… nothing.
+No reply. No read receipt. Just the digital void.
+
+So you wait.
+You wonder.
+Then you text again:
+
+> “Maybe you didn’t see this?”
+
+Welcome to the world of **API timeouts and retries** — where your app is *emotionally dependent* on another system that might not call back.
+
+### 🧠 What Is an API Timeout?
+
+An API timeout is your app saying:
+
+> “I asked you for something, but you took too long, so I’m leaving.”
+
+Maybe the other service is:
+
+- Busy
+- Broken
+- Sleeping
+- Being held hostage by a misconfigured load balancer
+
+Either way, you’re stuck waiting.
+
+And in tech — just like in dating — **waiting too long with no response is never a good sign**.
+
+### 🔁 So What Do We Do? We Retry.
+
+Your app says:
+
+> “Hey, just checking in again in case you missed this!”
+
+Retries are your code’s version of:
+
+- “👋 just bumping this to the top of your inbox”
+- “Hey, sorry, meant to follow up on this thread!”
+
+They work — sometimes.
+
+### ❌ But Wait — When Shouldn’t You Retry?
+
+Not all failures deserve a second chance.
+
+Here’s the golden rule:
+
+> Only retry if the request was **safe to repeat**.
+
+### ✅ Retry these:
+
+- Network timeout
+- 502 Bad Gateway
+- 503 Service Unavailable
+
+### ❌ Don’t retry these:
+
+- 400 Bad Request (you messed up)
+- 401 Unauthorized (you really messed up)
+- 500 Internal Server Error? Depends (could be your bad or theirs)
+
+And for the love of servers, **don’t retry POSTs blindly** unless they’re idempotent.
+Otherwise, you just paid someone *twice* or created two users named “Help.”
+
+### ⏳ How Long Should You Wait?
+
+That’s where **exponential backoff** comes in.
+
+It’s like saying:
+
+> “Okay, I’ll try again in 1 second.Still no answer? I’ll wait 2 seconds… then 4… then 8…”
+
+The goal is:
+
+- Stop hammering the server
+- Still give it a chance to recover
+- Not completely ghost it forever
+
+Some systems add **jitter** — random delays — so a thousand apps don’t retry at the exact same time.
+Because then you get a **Distributed DoS Attack... on yourself.**
+
+### 💬 Real-Life Analogy
+
+Let’s say your app asks for order status:
+
+```
+GET /order/123/status
+```
+
+And the service is slow. You:
+
+- Retry 3 times
+- Wait longer between tries
+- Then… give up (timeout)
+- Show user:
+
+> “Sorry, we’re having trouble retrieving your order. Please try again later.”
+
+🎯 That’s respectful ghosting.
+Not ideal, but better than freezing.
+
+### 🔐 Bonus: Idempotency Keys
+
+For APIs that do *stuff* (like POST /payments), you need **idempotency keys**.
+
+They’re like:
+
+> “If I accidentally send this request twice, treat it as one, please.”
+
+You attach a unique token:
+
+```
+POST /purchase Idempotency-Key: x123abc
+```
+
+The server says:
+
+> “Got it — if I see this again, I won’t process it twice.”
+
+### 🧠 Final Thought
+
+APIs ghost you. It happens.
+
+But your job isn’t just to **call** another service — it’s to handle the silence with grace.
+
+> Retry — but politely.Back off — but not forever.And always have a message ready for the user that isn’t just... "🤷‍♂️ Unknown error."
+
+Because the app that *handles failure well* is the one users keep trusting — even when the server ghosts you.

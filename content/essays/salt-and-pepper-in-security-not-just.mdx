@@ -1,0 +1,84 @@
+---
+title: "🧂 Salt and Pepper in Security: Not Just for Your Fries 🍟"
+summary: "When it comes to protecting passwords, security experts don’t rely on just one trick. They add salt . Sometimes, they sprinkle in some pepper too..."
+date: "2025-10-29"
+featured: false
+tags: []
+category: "Engineering"
+cover: "/images/salt-pepper.png"
+---
+When it comes to protecting passwords, security experts don’t rely on just one trick. They add **salt**. Sometimes, they sprinkle in some **pepper** too.
+No, we’re not talking about food—we’re talking about **cryptographic seasoning** 🍴.
+
+Let’s break it down.
+
+### 🔒 The Problem: Hashes Can Be Cracked
+
+Storing passwords as hashes is better than storing them as plain text, but hashes alone aren’t enough.
+
+Why?
+Because hackers can use **rainbow tables**—huge lists of precomputed password hashes—to reverse-engineer your password.
+
+So… we add some spice.
+
+## 🧂 Salt: The Personalized Secret Ingredient
+
+**Salt** is a random string added to a password *before* hashing.
+
+Example:
+
+```
+Password: password123 
+Salt: A8&kL9z! 
+Combined: password123A8&kL9z! 
+Hash: [unique scrambled output]
+```
+
+Each user gets a **unique salt**. Even if two people use the same password, their hashes will be different.
+
+![Salt, Pepper illustration](/images/salt.png)
+
+
+This kills rainbow attacks instantly. 🎯
+
+## 🌶️ Pepper: The Hidden Extra Twist
+
+**Pepper** is like salt, but with a twist:
+
+- It’s not stored with the password.
+- It’s usually a **system-wide secret** stored in code or environment variables.
+- It adds one more hidden layer that hackers can’t easily get.
+
+Example:
+
+```
+Password: password123 
+Salt: A8&kL9z! 
+Pepper: $ecret! 
+Combined: password123A8&kL9z!$ecret! 
+Hash: [stronger scrambled output]
+```
+
+Even if a hacker steals the database (including salts), they still need the **pepper**—which isn’t stored in the database at all.
+
+## 🍳 Why Use Both?
+
+- **Salt** protects against precomputed attacks like rainbow tables.
+- **Pepper** protects even if the database is breached.
+- Together, they make your password hashes **unique**, **unpredictable**, and **hard to reverse**.
+
+It’s like locking a door (*hashing*), adding a unique key (*salt*), and hiding a booby trap behind it (*pepper*).
+
+## 🧠 Summary
+
+- **Salt** = unique per-user string stored with the hash.
+- **Pepper** = hidden system-wide secret not stored in the database.
+- They make hashes much harder to crack—even if someone gets your data.
+
+### 👨‍🍳 Security Recipe (in plain English):
+
+1. User enters a password.
+2. App adds salt (user-specific) and pepper (secret).
+3. Hash it all together.
+4. Store only: the salt and the final hash.
+5. Keep the pepper locked away in your app config.
