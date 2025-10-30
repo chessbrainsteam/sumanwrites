@@ -1,0 +1,98 @@
+---
+title: "When Design Meets Reality: The 3 Laws of Production Bugs"
+summary: "Every engineer knows: the universe runs on three immutable laws — the bug only appears when a VP is watching, logs stay silent until you add more, and the fix will always break analytics."
+date: "2025-10-30"
+featured: false
+tags: []
+category: "Engineering"
+cover: "/images/production-bugs.png"
+---
+
+There are laws of physics.  
+There are laws of thermodynamics.  
+And then there are the **laws of production bugs** —  
+rules so consistent they might as well be part of the Agile Manifesto’s fine print.
+
+You don’t learn them in computer-science class.  
+You earn them — in late-night deployments, on dying Zoom calls, with cold pizza and warm panic.
+
+---
+
+## ⚙️ Law #1: The Bug Only Appears When a VP Is Watching
+
+You can test for weeks — staging, load, UAT, sandbox, pre-prod, even that one secret “just-in-case” environment you spun up on your personal account.  
+Everything’s fine.  
+Flawless.
+
+Then demo day arrives.  
+VP joins.  
+Someone shares screen.  
+You click the “Show Insights” button — and boom.
+
+The API times out.  
+The charts spin forever.  
+The VP leans forward, smiling politely, while you contemplate alternate careers.
+
+This is not coincidence.  
+This is **quantum bug observation theory**:  
+> *A bug exists only when it detects human authority nearby.*
+
+It’s nature’s way of reminding us that confidence should always deploy behind a feature flag.
+
+---
+
+## 📜 Law #2: Logs Will Be Silent Until You Add More
+
+You finally reproduce the bug in prod (after swearing it “should never happen”).  
+You open the logs.  
+Nothing.
+
+You add more logs, redeploy, and—  
+like a magician revealing his trick—  
+the system starts working perfectly.
+
+It’s not superstition; it’s software karma.  
+Bugs fear visibility.  
+They hide in the shadows of insufficient logging.
+
+There’s a simple moral here:  
+**log early, log often, log like your career depends on it.**
+
+Because someday it might.
+
+---
+
+## 🧨 Law #3: The Fix Will Break the Analytics Dashboard
+
+After hours of heroic debugging, you identify the culprit — one innocent-looking null check.  
+You push the fix, monitor the pipeline, and breathe that sweet “all-green” relief.
+
+Then someone from analytics messages:  
+> “Hey, our metrics just flatlined since your last deploy.”
+
+Turns out your fix changed an event name, removed a parameter, or accidentally “optimized away” the only field they needed.
+
+Congratulations — you’ve just learned **conservation of pain**:  
+> You can never destroy a bug. You can only transfer it to another system.
+
+---
+
+## 🧠 Lessons in Humility and Release Readiness
+
+These three laws aren’t about pessimism — they’re about **respect**.  
+Respect for complexity.  
+Respect for the invisible forces that connect one line of code to an executive demo, a log parser, and a revenue dashboard.
+
+Every seasoned engineer eventually learns:
+- No design survives first contact with production.  
+- Perfection is less important than observability.  
+- And confidence without rollback is just optimism in disguise.
+
+So next time a VP asks, “Is it stable?” —  
+say: *“It’s stable enough to know when it’s unstable.”*
+
+That’s not cynicism. That’s experience.
+
+---
+
+💡 *In production, humility scales better than code.*
