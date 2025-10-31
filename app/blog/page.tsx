@@ -69,7 +69,8 @@ const categories = [
     >
       {icon === "user" && <UserGroupIcon className="h-4 w-4" />}
       {icon === "cog" && <CogIcon className="h-4 w-4" />}
-      {name}
+       {icon === "cpu-chip" && <CpuChipIcon className="h-4 w-4" />}
+       {name}
     </Link>
   );
 })}
