@@ -1,0 +1,120 @@
+---
+title: "Caching: The Friend Who Remembers Everything (Except When It Matters)"
+summary: "A humorous look at caching — that overconfident friend who remembers everything except when it actually counts. Explores cache hits, misses, invalidation, and the fine art of knowing when to forget."
+date: "2025-11-07"
+featured: true
+tags: []
+category: "System Design"
+cover: "/images/caching-friend.png"
+---
+
+Everyone loves caching — until it ruins your day.
+
+It’s the enthusiastic friend who remembers everything you told them last week but blanks out at your birthday dinner.  
+Fast, helpful, confident… and occasionally, *utterly wrong.*
+
+---
+
+## 🧠 The Cache Personality
+
+Caching is basically your system’s short-term memory.  
+When it works, it’s magical: instant responses, happy users, servers sipping coffee in peace.  
+
+But like that one friend who confidently remembers your Wi-Fi password from 2019 — caching’s memory can be *dangerous* when it’s outdated.
+
+> “Oh yeah, I know that value!”  
+> — Cache, seconds before serving stale data.
+
+---
+
+## 🎯 Cache Hits and Misses: The Gossip Game
+
+Let’s imagine your app as a group chat.
+
+- **Cache Hit:**  
+  Someone asks a question, and your friend blurts out the answer immediately.  
+  Quick, efficient, slightly smug.  
+
+- **Cache Miss:**  
+  The friend goes silent. You sigh and look it up yourself (database call).  
+  Slower, but accurate.
+
+- **Stale Read:**  
+  The friend *thinks* they remember, but they’re wrong.  
+  “No, no, the sale is still live!” they insist — hours after it ended.
+
+---
+
+## 🕰️ The TTL Dilemma: When to Forget
+
+To avoid becoming that friend, caches use a **TTL** (Time-To-Live).  
+It’s like an expiry date for memory.
+
+Too short, and you’re constantly re-fetching data.  
+Too long, and you’re confidently wrong for hours.
+
+Finding the right TTL is like dating in your 30s — it’s all about commitment issues.
+
+---
+
+## 🔁 Cache Invalidation: The Hardest Problem in Computer Science™
+
+You’ve probably heard this famous quote:
+> “There are only two hard things in Computer Science: cache invalidation and naming things.”  
+> — Phil Karlton, probably while debugging Redis.
+
+Cache invalidation is when you tell your cache,  
+> “Forget everything you know about this. It’s outdated now.”  
+
+But caches, like humans, don’t always forget gracefully.  
+Sometimes they cling to stale data like it’s emotional baggage.
+
+---
+
+## ⚙️ Strategies to Keep the Friendship Healthy
+
+1. **Write-Through Cache:**  
+   Every time you write to the DB, you also update the cache.  
+   ✅ Always fresh, but adds latency.  
+
+2. **Write-Behind Cache:**  
+   Write to the cache first, and let it update the DB later.  
+   ⚡ Fast, but dangerous — like texting before thinking.  
+
+3. **Cache-Aside (Lazy Loading):**  
+   Only read from DB when needed, then cache the result.  
+   🧘‍♂️ Simple, balanced, and the most common approach.
+
+4. **Invalidate Smartly:**  
+   Don’t nuke the entire cache — evict selectively.  
+   Or you’ll be explaining to your boss why the homepage loaded like a 2005 blog.
+
+---
+
+## 🧩 Distributed Cache: The Group Chat Problem
+
+In large systems, you don’t just have *one* cache — you have *many.*  
+They don’t always agree.
+
+- Node A says “user is active.”  
+- Node B says “user logged out.”  
+- Node C says “who even is this user?”
+
+Welcome to the world of **eventual consistency**, where truth is more of a suggestion.
+
+---
+
+## 💡 The Moral of the Story
+
+Caching isn’t about remembering *everything.*  
+It’s about remembering *the right things, for the right amount of time.*
+
+- Don’t trust memory without context.  
+- Don’t rely on speed without truth.  
+- And always give your cache a way to say, “Wait, let me check.”
+
+> Because fast and wrong is still wrong — just sooner.
+
+---
+
+🧱 *Caching: proof that remembering everything isn’t the same as understanding anything.*
