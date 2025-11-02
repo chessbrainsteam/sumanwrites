@@ -3,7 +3,7 @@ import FeaturedList from "@/components/FeaturedList";
 import Pagination from "@/components/Pagination";
 import { getAllPosts, getFeaturedPosts } from "@/lib/mdx";
 import Link from "next/link";
-import { UserGroupIcon, CogIcon, CpuChipIcon } from "@heroicons/react/24/outline";
+import { UserGroupIcon, CogIcon, CpuChipIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 
 
 export const metadata = { title: "Blog — sumanwrites" };
@@ -44,6 +44,7 @@ const categories = [
   { name: "Leadership", icon: "user" },
   { name: "Engineering", icon: "cog" },
   { name: "Artificial Intelligence", icon: "cpu-chip" },
+  { name: "System Design", icon: "book-open" },
 ];
 
  
@@ -70,6 +71,7 @@ const categories = [
       {icon === "user" && <UserGroupIcon className="h-4 w-4" />}
       {icon === "cog" && <CogIcon className="h-4 w-4" />}
        {icon === "cpu-chip" && <CpuChipIcon className="h-4 w-4" />}
+       {icon === "book-open" && <BookOpenIcon className="h-4 w-4" />}
        {name}
     </Link>
   );

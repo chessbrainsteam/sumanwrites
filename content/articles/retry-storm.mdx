@@ -1,0 +1,135 @@
+---
+title: "The Retry Storm: When Good Clients Go Bad"
+summary: "A thriller about well-meaning services that won’t take 'no' for an answer — and how innocent retry logic can bring down entire systems."
+date: "2025-11-06"
+featured: true
+tags: []
+category: "System Design"
+cover: "/images/retry-storm.png"
+---
+
+It began on a quiet Tuesday.  
+Traffic was steady, logs were green, dashboards calm.  
+And then — one small timeout triggered a chain reaction that would make disaster movies look subtle.
+
+---
+
+## 🌩️ Act I: The First Timeout
+
+Somewhere in the cloud, a client made a simple API call.  
+It waited… a few milliseconds too long.  
+
+> “Hmm, must be the network,” the client thought.  
+> “I’ll just retry. Once. Maybe twice.”
+
+Harmless, right?  
+Except a thousand other clients thought the same thing.
+
+Now the server, already under pressure, got double the requests — each retrying like a toddler insisting,  
+> “Did you hear me? Did you hear me now?”
+
+---
+
+## 🔥 Act II: The Storm Forms
+
+Soon, retries piled on retries.  
+The server, gasping for breath, started timing out more often.  
+Clients panicked.  
+They retried again. And again. And again.
+
+Congratulations — you’ve just witnessed the birth of a **Retry Storm**.  
+A self-inflicted **distributed denial of service** (DDoS).  
+
+No hackers. No bad actors.  
+Just polite, well-meaning software… gone feral.
+
+---
+
+## ⚙️ Act III: When Good Clients Go Bad
+
+Let’s pause the chaos for a quick breakdown.
+
+**What’s really happening here?**
+
+- **Retry logic** is meant to handle temporary failures gracefully.  
+- But without **limits**, **jitter**, or **backoff**, those retries stack up like a feedback loop.  
+- The result? The server never recovers — because clients keep attacking it with love.
+
+It’s like 100 people shouting “Are you okay?” at someone who just fainted.
+
+---
+
+## 🧠 Act IV: Enter Idempotency — The Hero We Deserve
+
+If retries are inevitable, we need a system that doesn’t panic when they happen.
+
+That’s where **idempotency** comes in.  
+
+> An idempotent operation can run multiple times and still have the same effect.
+
+Example:
+- Charging a customer twice for the same payment = ❌  
+- Charging once, but safely retrying if confirmation failed = ✅
+
+It’s the digital version of saying:  
+> “If I already did this, I won’t do it again — promise.”
+
+---
+
+## ⏳ Act V: Exponential Backoff — The Art of Waiting Gracefully
+
+Now let’s talk **backoff** — not as a threat, but as a life skill.
+
+Instead of retrying immediately (and making things worse), clients should **wait a little longer each time**.  
+
+For example:
+- Retry after 1 second.  
+- Then 2 seconds.  
+- Then 4, 8, 16…  
+
+Add a bit of **random jitter** so everyone doesn’t retry in sync, and you’ve turned chaos into choreography.
+
+> “Patience,” said every successful distributed system ever.
+
+---
+
+## 🧩 Act VI: Fault Isolation — Because Firewalls Aren’t Just for Hackers
+
+When one service starts misbehaving, it shouldn’t take the entire system down with it.  
+That’s why we build **circuit breakers**, **bulkheads**, and **timeouts**.
+
+- **Circuit breaker:** stop calling a failing service temporarily.  
+- **Bulkhead:** isolate resources so one failure doesn’t flood others.  
+- **Timeout:** cut off calls that take too long before they spiral.
+
+Together, these patterns keep your architecture resilient — even when the clients go rogue.
+
+---
+
+## 🌤️ Act VII: The Calm After the Storm
+
+Eventually, the engineers rolled out fixes:
+- Exponential backoff.  
+- Idempotency keys.  
+- Circuit breakers.  
+- And a healthy fear of “just one more retry.”
+
+The system recovered.  
+The logs went green again.  
+But the scars — and the PagerDuty nightmares — would remain forever.
+
+---
+
+## 💡 The Takeaway
+
+- **Retries are not evil.** They’re essential.  
+- **But** unbounded retries are chaos disguised as optimism.  
+- Use **idempotency**, **backoff**, and **fault isolation** — or your system will lovingly destroy itself.
+
+Because in the end, even good clients can go bad…  
+> especially when they just can’t take “timeout” for an answer.
+
+---
+
+🛠️ *Resilience isn’t about never failing.  
+It’s about failing politely, at reasonable intervals.*
