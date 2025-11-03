@@ -1,0 +1,121 @@
+---
+title: "Consistent Hashing: The Circle of (Distributed) Life"
+summary: "A lighthearted look at how consistent hashing keeps distributed systems calm when new servers come and go — ensuring the circle of data life stays mostly intact."
+date: "2025-11-10"
+featured: true
+tags: []
+category: "System Design"
+cover: "/images/consistent-hashing.png"
+---
+
+Once upon a time, in a data center not so far away,  
+there was a cluster of servers living happily together —  
+sharing keys, caching data, and serving requests in peace.
+
+Until one day, someone added a new server.  
+And everything fell apart.
+
+---
+
+## 😬 The Problem Before the Circle
+
+Imagine you’re running a cache cluster with 4 servers: A, B, C, D.  
+Each key (say, a user session) is assigned to a server using a simple formula:
+
+server = hash(key) % 4
+
+
+Beautifully simple.  
+Until you add one more server — E.
+
+Now `% 4` becomes `% 5`, and *every single key* gets a new hash.  
+Every cache entry? Gone.  
+Every request? A miss.  
+Every engineer? Panicking.
+
+That’s called **rehashing chaos** —  
+where one tiny scaling change invalidates your entire cache.  
+
+It’s like reorganizing a library alphabetically by last name,  
+then deciding to include middle initials.
+
+---
+
+## 🌀 Enter Consistent Hashing
+
+Then came a hero.  
+A simple idea that changed distributed systems forever:
+
+> “What if the servers lived on a circle?”
+
+Picture a ring — 0° to 360°.  
+Now, you hash both your **servers** and **keys** onto that same circle.
+
+Each key belongs to the *first server clockwise from its position.*
+
+Add a new server?  
+Only the keys that fall between it and its neighbor move.  
+Remove a server? Same deal.
+
+> The circle stays consistent.  
+> The universe doesn’t collapse.
+
+---
+
+## 🎯 Why It Works
+
+Consistent hashing solves the chaos of scaling:
+- **Minimal movement:** Only a fraction of data changes placement when nodes change.  
+- **Even distribution:** Each server gets roughly the same amount of keys.  
+- **Fault tolerance:** Remove one node — others pick up the slack smoothly.  
+
+It’s like a round table dinner —  
+if one guest leaves, everyone just shifts over a little.
+
+---
+
+## 🔁 Virtual Nodes — The Secret Ingredient
+
+In practice, not all servers are equal.  
+One has SSDs, another is running on emotional support and coffee.  
+
+To balance load better, we create **virtual nodes** —  
+multiple positions on the circle for the same physical server.  
+
+Example:
+- Server A gets 3 spots on the ring (A1, A2, A3).  
+- Server B gets 5.  
+- The hash function spreads them evenly.
+
+Now load isn’t just fair — it’s flexible.
+
+---
+
+## ⚙️ Real-World Examples
+
+You’ve seen consistent hashing in action even if you didn’t realize it:
+
+- **CDNs (Akamai, Cloudflare):** deciding which edge server stores which content.  
+- **Distributed Caches (Memcached, Redis Cluster):** routing keys without breaking everything.  
+- **Load Balancers & Databases:** picking nodes predictably even as clusters scale.
+
+It’s the unsung hero of “we added more servers and nothing exploded.”
+
+---
+
+## 💡 A Life Lesson from the Hash Ring
+
+Consistent hashing isn’t just math.  
+It’s wisdom disguised as an algorithm.
+
+> When change happens, don’t reshuffle everything.  
+> Just adjust what’s necessary and keep the circle intact.
+
+Scalable systems — and people — stay stable  
+not because they avoid change,  
+but because they **localize its impact.**
+
+---
+
+🌀 *The secret to distributed harmony:  
+Change little. Stay consistent. Keep the circle unbroken.*
