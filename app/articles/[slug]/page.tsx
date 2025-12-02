@@ -6,6 +6,7 @@ import { getAllSlugs, getPostBySlug, getAdjacent, getFeaturedPosts } from "@/lib
 import ArticleActions from "@/components/ArticleActions";
 import remarkGfm from "remark-gfm";
 
+const SITE_URL = "https://www.sumanwrites.com";
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -14,11 +15,37 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
   if (!post) return {};
+
+  const url = `${SITE_URL}/articles/${params.slug}`;
+  const imageUrl = post.cover ? `${SITE_URL}${post.cover}` : undefined;
+
   return {
     title: `${post.title} — sumanwrites`,
     description: post.summary,
+    openGraph: {
+      type: "article",
+      url,
+      title: post.title,
+      description: post.summary,
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary,
+      images: imageUrl ? [imageUrl] : [],
+    },
   };
 }
+
 
 export default function EssayPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
