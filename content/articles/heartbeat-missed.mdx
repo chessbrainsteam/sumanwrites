@@ -1,0 +1,105 @@
+---
+title: "Heartbeat Missed: When Distributed Systems Start Ghosting Each Other"
+summary: "A story about liveness checks, false alarms, and why silence doesn’t always mean death."
+date: "2025-11-10"
+featured: false
+tags: []
+category: "System Design"
+cover: "/images/heartbeat-ghosting.png"
+---
+
+It began with silence.
+
+No error.  
+No crash.  
+Just… nothing.
+
+One node stopped responding.  
+Another panicked.  
+Soon the whole cluster was asking the same question humans have asked forever:
+
+> “Are they ignoring me — or are they gone?”
+
+Welcome to **heartbeats**.
+
+---
+
+## 💓 What Is a Heartbeat?
+
+In distributed systems, a heartbeat is a simple signal:
+
+> “I’m alive.”
+
+Nodes send periodic messages to each other to confirm liveness.  
+No data. No intent. Just existence.
+
+Miss enough heartbeats — and the system assumes the worst.
+
+---
+
+## 🚨 The Overreaction Problem
+
+Here’s the uncomfortable truth:
+
+- Networks stall  
+- Garbage collection pauses threads  
+- CPUs spike  
+- Packets get delayed  
+
+And suddenly a healthy node looks… suspicious.
+
+> Was it a temporary pause?  
+> Or an actual failure?
+
+This is how **false positives** are born —  
+the system equivalent of checking your phone after five minutes and thinking:
+> “That’s it. They’re gone.”
+
+---
+
+## 🧠 Failure Detection Is About Trust
+
+Distributed systems don’t *know* failures.  
+They **infer** them.
+
+That’s why heartbeat mechanisms rely on:
+- Timeouts  
+- Retry windows  
+- Adaptive thresholds  
+
+Too aggressive → chaos.  
+Too relaxed → zombie nodes that never quite die.
+
+---
+
+## 💔 When the System Moves On
+
+Once a node is declared dead:
+- Leaders get re-elected  
+- Traffic reroutes  
+- Data ownership changes  
+
+And if that node suddenly returns?
+
+Awkward.
+
+> “You already replaced me?”
+
+Welcome to split-brain territory.
+
+---
+
+## 🧭 The Lesson
+
+Heartbeats don’t detect truth.  
+They detect **absence of reassurance**.
+
+And in systems — just like relationships —  
+silence is ambiguous, not definitive.
+
+Design for grace.  
+Not panic.
+
+---
+
+⏳ *Distributed systems don’t fail because nodes crash. They fail because we assume too quickly that they did.*
